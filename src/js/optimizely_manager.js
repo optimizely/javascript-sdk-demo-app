@@ -9,6 +9,7 @@ import {datafileURL} from '../../constants';
 
 class OptimizelyManager {
 
+  // instantiate the Optimizely client
   static async createInstance() {
     var datafile = await _getDatafile();
     return optimizely.createInstance({
@@ -22,7 +23,7 @@ class OptimizelyManager {
 
 export default OptimizelyManager;
 
-
+// fetch JSON datafile from CDN
 async function _getDatafile() {
   return await fetch(datafileURL)
     .then(function (response) {

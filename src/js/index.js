@@ -6,9 +6,7 @@ import OptimizelyManager from './optimizely_manager';
 const _ = require('underscore');
 
 async function main() {
-
   const optimizelyClientInstance = await OptimizelyManager.createInstance();
-
 
   $(document).ready(function () {
     _buildItems()
@@ -23,24 +21,26 @@ async function main() {
         return;
       }
       shop(userID);
-
     });
   });
 
-
   function shop(userID) {
+    // retrieve Feature Flag
     const isSortingEnabled = optimizelyClientInstance.isFeatureEnabled(
       'sorting_enabled',
-      userID);
+      userID,
+    );
 
+    // display feature if enabled
+    if (isSortingEnabled) {
+      _renderSortingDropdown();
+    }
+    // update UI to display if Feature Flag is enabled
     const indicatorBool = (isSortingEnabled) ? 'ON' : 'OFF';
     const indicatorMessage = `[Feature ${indicatorBool}] The feature "sorting_enabled" is ${indicatorBool} for user ${userID}`;
     $('#feature-indicator').html(indicatorMessage);
 
-    if (isSortingEnabled) {
-      _renderSortingDropdown();
-    }
-
+    // retrieve welcome message stored as a feature variable
     const welcomeMessage = optimizelyClientInstance.getFeatureVariableString(
       'sorting_enabled',
       'welcome_message',
