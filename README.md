@@ -32,8 +32,12 @@ Using the instructions below, you can run the app locally and mimic bucketing we
 2. Create a project via the Optimizely dashboard. [Instructions](http://developers.optimizely.com/server/getting-started/index.html?language=javascript)
 3. Add a Feature with the key `sorting_enabled`. This will act as a toggle for our new feature.
 4. In `constants.js`, update the `datafileURL` field. This is found in the dashboard, under Settings -> Environments.
-5. Install dependencies `npm install` & run the application `npm start`
-6. You’re all set. Read below to walkthrough the code!
+5. Install dependencies & run the application
+```
+$ npm install
+$ npm start
+```
+6. You’re all set. View at: `http://localhost:8080`!
 
 
 ### Building the App
