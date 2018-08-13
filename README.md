@@ -25,7 +25,7 @@ This example app illustrates how an online retailer could developer a new featur
 
 Using the instructions below, you can run the app locally and mimic bucketing website visitors by entering unique user IDs into the input bar. For example, the user ID “Matt” would simulate a unique visitor and the SDK would determine whether the feature shold be shown. The bucket that is given to a specific unique visitor, such as Matt, will be deterministic. This means as long as the Optimizely conditions remain the same, Matt will always get the same experience.
  
-<img src="https://github.com/optimizely/javascript-sdk-demo-app/blob/master/src/images/screenshot.png" width="420" height="369px">
+<img src="https://github.com/optimizely/javascript-sdk-demo-app/blob/master/src/images/screenshot.png" width="450">
 
 ### Deploying the App
 1. Login or create an [Optimizely Account](https://app.optimizely.com/signin).
