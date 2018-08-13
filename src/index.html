@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" class="height--1-1">
+<head>
+    <title>Attic & Button</title>
+    <!-- Latest compiled and minified OUI stylesheet -->
+    <link rel="stylesheet" type="text/css" href="css/oui.css">
+    <style>
+        table, th, td, div {
+            padding: 5px;
+        }
+
+        td {
+            background: white;
+            font-family: tahoma;
+            text-align: center;
+        }
+
+        .red-button {
+            padding: 8px 15px;
+            background: #cb1b2c;
+            color: #ffffff;
+            border: none;
+            margin-top: 10px;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="../dist/bundle.js"></script>
+</head>
+<body class="background--grey height--1-1">
+<div class="flex flex-justified--center soft-quad--ends soft-double--bottom background--faint">
+    <div class="max-width--large text--center text-align--center align--center">
+        <img src="images/logo.png" class="width--200 text--center align--middle" align="middle"
+             style="margin-bottom:35px">
+        <h2 id="welcome"> Welcome to Attic & Button!</h2>
+        <div align="center">
+            <b>Simulate a visitor:</b>
+            <input id="input-name" placeholder="Joe"></input>
+            <button id="input-name-button">Shop</button>
+        </div>
+        <div id="feature-indicator" style="text: center; color: #cb1b2c;"></div>
+        <div style="margin-top: 10px">
+            <div id="sorting"></div>
+            <table id="items-table"></table>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "optimizely-javascript-demo-app",
+  "version": "1.0.0",
+  "description": "Optimizely JS Demo App",
+  "main": "server.js",
+  "scripts": {
+    "start": "webpack && node server.js",
+    "start:dev": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/optimizely/javascript-sdk-demo-app"
+  },
+  "author": "Optimizely",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/optimizely/javascript-sdk-demo-app/issues"
+  },
+  "homepage": "https://github.com/optimizely/javascript-sdk-demo-app",
+  "dependencies": {
+    "@optimizely/optimizely-sdk": "^2.1.2",
+    "es6-promise": "^4.2.4",
+    "express": "^4.14.0",
+    "isomorphic-fetch": "^2.2.1",
+    "underscore": "^1.9.1",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  }
+}
