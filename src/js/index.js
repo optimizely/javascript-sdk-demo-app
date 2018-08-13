@@ -1,3 +1,6 @@
+// JavaScript SDK Demo App
+// Copyright 2018 Optimizely. Licensed under the Apache License
+
 import OptimizelyManager from './optimizely_manager';
 
 const _ = require('underscore');
