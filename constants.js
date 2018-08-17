@@ -1,9 +1,8 @@
 // constants.js
 
-// provide datafile URL. In the dashboard sidebar, [Settings] -> [Environments]
-// https://developers.optimizely.com/x/solutions/sdks/reference/?language=python#datafile
-const datafileURL = '';
+// Default datafile provided to get up and running quickly. Replace with your own!
+const datafileURL = 'https://cdn.optimizely.com/datafiles/CpqC7ch493FEqa3HzY3963.json';
 
 module.exports = {
-  datafileURL,
+  datafileURL
 }
