@@ -4,7 +4,7 @@
   "description": "Optimizely JS Demo App",
   "main": "server.js",
   "scripts": {
-    "start": "webpack && node server.js",
+    "start": "webpack --config webpack.config.js && node server.js",
     "start:dev": "webpack-dev-server"
   },
   "repository": {
@@ -22,11 +22,10 @@
     "es6-promise": "^4.2.4",
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.2.1",
-    "underscore": "^1.9.1",
-    "webpack-dev-server": "^3.1.5"
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
+    "webpack-dev-server": "^3.1.5",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
   }
