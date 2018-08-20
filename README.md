@@ -35,6 +35,11 @@ Using the instructions below, you can run the app locally and mimic bucketing we
 5. Install dependencies `npm install` & run the application `npm start`
 6. You’re all set. Read below to walkthrough the code!
 
+### Frontend Bundle
+
+Instead of including the SDK on the page as a standalone JavaScript asset, we use webpack to bundle all of our source code and dependencies into a single bundle. This includes all of our application logic as well as experimentation logic, including the Optimizely SDK. See `webpack.config.js`, the webpack configuration file, for an example of how this can work.
+
+Alternatively, you could use webpack to build two bundles: a standalone Optimizely SDK bundle that assigns a property to `window`, and your application bundle which would make references to the global Optimizely SDK client variable.
 
 ### Building the App
 
