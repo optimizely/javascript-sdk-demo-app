@@ -9,7 +9,7 @@ if (!datafileURL) {
 }
 
 
-app.use(express.static(__dirname, '/src'));
+app.use(express.static(__dirname + '/src'));
 
 
 app.get('/dist/bundle.js', function (req, res) {

@@ -30,11 +30,15 @@ async function main() {
       'sorting_enabled',
       userID,
     );
-
+    
     // display feature if enabled
     if (isSortingEnabled) {
       _renderSortingDropdown();
+    } else {
+    // ensure feature is disabled
+      $('#sorting').remove();
     }
+
     // update UI to display if Feature Flag is enabled
     const indicatorBool = (isSortingEnabled) ? 'ON' : 'OFF';
     const indicatorMessage = `[Feature ${indicatorBool}] The feature "sorting_enabled" is ${indicatorBool} for user ${userID}`;
