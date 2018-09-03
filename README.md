@@ -30,9 +30,10 @@ Using the instructions below, you can run the app locally and mimic bucketing we
 ### Deploying the App
 1. Login or create an [Optimizely Account](https://app.optimizely.com/signin).
 2. Create a project via the Optimizely dashboard. [Instructions](http://developers.optimizely.com/server/getting-started/index.html?language=javascript)
-3. Add a Feature with the key `sorting_enabled`. This will act as a toggle for our new feature.
-4. In `constants.js`, update the `datafileURL` field. This is found in the dashboard, under Settings -> Environments.
-5. Install dependencies & run the application
+3. Add a Feature with the key `sorting_enabled`. This will act as a toggle for our new feature. 
+4. Add the Event Key `item_purchase`.
+5. In `constants.js`, update the `datafileURL` field. This is found in the dashboard, under Settings -> Environments.
+6. Install dependencies & run the application
 ```
 $ npm install
 $ npm start
