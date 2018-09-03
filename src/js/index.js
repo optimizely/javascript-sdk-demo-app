@@ -52,6 +52,9 @@ async function main() {
     );
     if (welcomeMessage) {
       $('#welcome').html(welcomeMessage);
+    } else {
+     // Set a default message
+      $('#welcome').html('Welcome to Attic & Button');
     }
   }
 
