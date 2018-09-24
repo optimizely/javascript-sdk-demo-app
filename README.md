@@ -111,17 +111,18 @@ The bundled SDK is located in **./dist/bundle.js** and the demo source code is l
 
 ### Visual Assets
 **./src/items.csv** contains the list of products to sell on the demo website. For each product the file provides the description, color, name, price, and the name of a .png image file to display. The image files are located in **./src/images**:
+
 |Asset                   |Description                                                                                        |
 |------------------------|---------------------------------------------------------------------------------------------------|
-|`item_1.png`            |Contains an image of a hat.|
-|`item_2.png`            |Contains an image of a pair of shorts.|
-|`item_3.png`            |Contains an image of a bag.|
-|`item_4.png`            |Contains an image of a dress.|
-|`item_5.png`            |Contains an image of a dress .|
-|`item_6.png`            |Contains an image of a shirt.|
-|`item_7.png`            |Contains an image of a shirt.|
-|`item_8.png`            |Contains an image of a shirt.|
-|`item_9.png`            |Contains an image of a sweater.|
+|`item_1.png`|Contains an image of a hat.|
+|`item_2.png`|Contains an image of a pair of shorts.|
+|`item_3.png`|Contains an image of a bag.|
+|`item_4.png`|Contains an image of a dress.|
+|`item_5.png`|Contains an image of a dress .|
+|`item_6.png`|Contains an image of a shirt.|
+|`item_7.png`|Contains an image of a shirt.|
+|`item_8.png`|Contains an image of a shirt.|
+|`item_9.png`|Contains an image of a sweater.|
 
 ### Styling
 The web page (**index.html**) references a basic CSS located in **./src/css**.
