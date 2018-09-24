@@ -143,7 +143,7 @@ async function main() {
 }
 ```
 
-**Note**: `OptimizelyManager` is a helper class and more information about it is provided below in [Create the Manager Instance](#create-the-manager-instance).
+**Note**: `OptimizelyManager` is a helper class. For more information, see [Create the Manager Instance](#create-the-manager-instance).
 
 The function then sets up the `ready` handler:
 ```javascript
@@ -170,9 +170,9 @@ async function main() {
 }
 ```
 
-The `ready` handler starts by invoking a helper function called `_builditems` that reads the products from **./src/items.csv** and stores them in a collection. It then invokes a helper function called `_renderItemsTable` passing in the collection of products that that helper function uses to render into an HTML table. `_renderItemsTable` also sets up an onclick event handler for each **Buy** button. The `ready` handler finishes by adding an onclick event handler for the **Shop** button (the Shop button is described in more detail below).
+The `ready` handler starts by invoking a helper function called `_builditems` that reads the products from **./src/items.csv** and stores them in a collection. It then invokes a helper function called `_renderItemsTable`, passing in the collection of products that the helper function uses to render into an HTML table. `_renderItemsTable` also sets up an `onclick` event handler for each **Buy** button. The `ready` handler finishes by adding an `onclick` event handler for the **Shop** button (the Shop button is described in more detail below).
 
-**Note:** the helper functions are also located in **index.js**.
+**Note:** The helper functions are also located in **index.js**.
 
 The `main` function also defines event handlers for the **Shop** and **Buy** buttons as described in the next section: [Functionality](#functionality).
 
@@ -206,7 +206,7 @@ class OptimizelyManager {
 }
 ```
 
-The function starts by invoking an asyncronous helper function called `_getDatafile()` (also defined in **optimizely_manager.js**) that gets the data from the file specified by the `datafileURL` const in **./constants.js**. This URL was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project).
+The function starts by invoking an asyncronous helper function called `_getDatafile()` (also defined in **optimizely_manager.js**) that retrieves the data from the file specified by the `datafileURL` const in **./constants.js**. This URL was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project).
 
 ## Functionality
 The demo illustrates how to:
@@ -252,11 +252,11 @@ function shop(userID) {
 }
 ```
 
-The handler takes in a user ID which is the name entered by the user in the edit field. The handler then invokes the `isFeatureEnabled` API passing the feature name `sorting_enabled` that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. If the feature has been enabled for that user ID then the sort dropdown is displayed allowing the user to sort the products, otherwise a message is displayed informing the user that the feature has not been enabled. You can toggle the Feature Flag in the **Feature Flag** settings under **Rollouts** in your Optimizely dashboard.
+The handler takes in a user ID which is the name entered by the user in the edit field. The handler then invokes the `isFeatureEnabled` API passing the feature name `sorting_enabled` that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. If the feature has been enabled for that user ID, the dropdown is displayed, allowing the user to sort the products; otherwise a message is displayed informing the user that the feature has not been enabled. You can toggle the Feature Flag in the **Feature Flag** settings under **Rollouts** in your Optimizely dashboard.
 
 **Note:** `isFeatureEnabled` also controls Rollouts and Feature Tests through the SDK's bucketing logic. This is helpful when rolling out the feature to larger audiences or running experiments. Read more about [SDK bucketing](https://help.optimizely.com/Build_Campaigns_and_Experiments/How_bucketing_works_in_Optimizely's_Full_Stack_SDKs) on the Optiverse.
 
-The bottom of the event handler demonstrates the `getFeatureVariableString` API which is used to determine if a custom welcome message has been configured for the feature, and if it has, replaces the default message.
+The last portion of the event handler demonstrates the `getFeatureVariableString` API, which is used to determine if a custom welcome message has been configured for the feature, and if it has, replaces the default message.
 
 ### Track the Experiment
 When the user clicks one of the **Buy** buttons located below a product image, the `buy` event handler set up by `main` is invoked: 
@@ -268,7 +268,7 @@ function buy() {
 }
 ```
 
-The handler obtains the user ID entered by the user in the input field. The handler then invokes the `track` API passing in the `item_purchase` event that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. Finally, the handler redirects the user to **.\src\purchase.html** to inform them about the experiment tracking.
+The handler obtains the user ID entered by the user. The handler then invokes the `track` API passing in the `item_purchase` event that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. Finally, the handler redirects the user to **.\src\purchase.html** to inform them about the experiment tracking.
 
 ## Additional Resources
 * Developer Docs: https://developers.optimizely.com/x/solutions/sdks/
