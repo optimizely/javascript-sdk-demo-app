@@ -6,16 +6,16 @@ The feature is a dropdown allowing the user to sort items by price or category, 
 
 ![test-app screens](./screenshot.png)
 
-You can run the app locally and mimic the bucketing of website visitors by entering unique user IDs into the edit field. For example, entering the user ID “Matt” simulates a unique visitor and the app uses the SDK to determine whether the sorting dropdown feature should be shown. The bucket that is given to a specific unique visitor, such as Matt, is deterministic. This means that as long as the Optimizely conditions remain the same, Matt will always get the same experience.
+You can run the app locally and mimic the bucketing of website visitors by entering unique user IDs into the edit field. For example, entering the user ID **Matt** simulates a unique visitor, and the app uses the SDK to determine whether the sorting dropdown feature is displayed. The bucket assigned to a specific unique visitor, such as Matt, is deterministic. This means that so long as the Optimizely conditions remain the same, Matt will always have the same experience.
 
 The demo works as follows:
-* Configuration starts by setting up a project, feature, and event in the Optimizely dashboard which will be queried by the demo web page using the Optimizely Javascript API.
-* The demo consists of a single web page stored in **./src/index.html** and a local server listening on Port 8080 that runs the server. The SDK is included in the web page via a [webpack](https://webpack.js.org) bundle.
+* Configuration includes setting up a project, feature, and event in the Optimizely dashboard, which is accessed by the demo web page using the Optimizely Javascript API.
+* The demo app consists of a single web page stored in **./src/index.html** and a local server listening on Port 8080. The SDK is included in the web page via a [webpack](https://webpack.js.org) bundle.
 * The main function and UI event handlers for the web page are defined in **./src/js/index.js**.
 * The code to create an Optimizely Client instance is defined in **/src/js/optimizely_manager.js**.
-* As the web page is rendered, the list of products and the names of their associated images to render, are read from **./src/items.csv**.
-* When the user clicks **Shop**, the demo invokes `isFeatureEnabled`, passing the user ID entered in the edit field and the feature name (`sorting_enabled`), to determine if the sorting dropdown should be shown for the user.
-* When the user clicks one of the **Buy Now** buttons, the demo invokes `track`, passing in the event key `item_purchase` and the user ID entered in the edit field, to track the event.
+* As the web page is rendered, the list of products and the names of their associated images are read from **./src/items.csv**.
+* When the user clicks **Shop**, the demo invokes `isFeatureEnabled`, passing the user ID (specified in the edit field) and the feature name (`sorting_enabled`), to determine if the sorting dropdown should be shown for the user.
+* When the user clicks one of the **Buy Now** buttons, the demo invokes `track`, passing in the event key `item_purchase` and the user ID to track the event.
 
 ## Prerequisites
 * [Optimizely account](https://app.optimizely.com/signin)
