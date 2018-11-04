@@ -21,7 +21,7 @@ Optimizely Full Stack allows developers to leverage Feature Management and run e
 
 ## Demo App
 
-This example app illustrates how an online retailer could developer a new feature behind a toggle, rollout it out gradually to more users and run an experiment on the new vs old experience by tracking a business metric.
+This example app illustrates how an online retailer could develop a new feature behind a toggle, rollout it out gradually to more users and run an experiment on the new vs old experience by tracking a business metric.
 
 Using the instructions below, you can run the app locally and mimic bucketing website visitors by entering unique user IDs into the input bar. For example, the user ID “Matt” would simulate a unique visitor and the SDK would determine whether the feature shold be shown. The bucket that is given to a specific unique visitor, such as Matt, will be deterministic. This means as long as the Optimizely conditions remain the same, Matt will always get the same experience.
  
