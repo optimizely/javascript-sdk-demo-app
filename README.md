@@ -1,106 +1,274 @@
-# JavaScript SDK Demo App
+# Optimizely JavaScript SDK Tutorial
 
-This demo uses the JavaScript SDK, a part of Optimizely's Full Stack 2.0 solution. It will walk you through:
+This tutorial enables you to quickly get started in your development efforts to create a JavaScript-based webpage with the Optimizely X JavaScript SDK Demo. This demo package includes an interactive project that illustrates how an online retailer could develop a new feature behind a toggle, roll it out gradually to more users, and run an experiment that tracks a business metric for the new and the old experiences.
 
-1. The capabilities of Feature Management
-2. How to put an in-development feature behind a Feature Flag
-3. How to launch to users with a controlled Rollout
-4. How to use a Feature Configuration
-5. How to run a Feature Test
-6. How to track business metrics
+The feature is a dropdown allowing the user to sort items by price or category, giving the user more control over just viewing products randomly on the page. To roll this feature out, it has been built behind an Optimizely-powered Feature that provides the ability to gate access without the need to deploy different versions of code.
 
-## Optimizely Full Stack 2.0 Overview
+![test-app screens](./screenshot.png)
 
-Optimizely Full Stack allows developers to leverage Feature Management and run experiments anywhere in code! The JavaScript SDK provides the core components and handles aspects like bucketing, which is used to designate users to a specific Feature Flag or experiment variation, conversion tracking, and reporting via Optimizely’s [Stats Engine](https://www.optimizely.com/statistics/).
+You can run the app locally and mimic the bucketing of website visitors by entering unique user IDs into the edit field. For example, entering the user ID “Matt” simulates a unique visitor and the app uses the SDK to determine whether the sorting dropdown feature should be shown. The bucket that is given to a specific unique visitor, such as Matt, is deterministic. This means that as long as the Optimizely conditions remain the same, Matt will always get the same experience.
 
-* View the [JavaScript Getting Started Guide](http://developers.optimizely.com/server/getting-started/index.html?language=python)
+The demo works as follows:
+* Configuration starts by setting up a project, feature, and event in the Optimizely dashboard which will be queried by the demo web page using the Optimizely JavaScript API.
+* The demo consists of a single web page defined in **./src/index.html** and a local server listening on Port 8080 that runs the server. The SDK is included in the web page via a [webpack](https://webpack.js.org) bundle.
+* The main function and UI event handlers for the web page are defined in **./src/js/index.js**.
+* The code to create an Optimizely Client instance is defined in **/src/js/optimizely_manager.js**.
+* As the web page is rendered, the list of products and the names of their associated images to render, are read from **./src/items.csv**.
+* When the user clicks **Shop**, the demo invokes `isFeatureEnabled`, passing the user ID entered in the edit field and the feature name (`sorting_enabled`), to determine if the sorting dropdown should be shown for the user.
+* When the user clicks one of the **Buy Now** buttons, the demo invokes `track`, passing in the event key `item_purchase` and the user ID entered in the edit field, to track the event.
 
-* View the reference [documentation](http://developers.optimizely.com/server/reference/index.html?language=javascript).
+## Prerequisites
+* [Optimizely account](https://app.optimizely.com/signin)
+* [npm](https://www.npmjs.com/get-npm)
 
-* Latest [JavaScript SDK](https://github.com/optimizely/javascript-sdk)
+## Quick start
+This section shows you how to prepare the project in the Optimizely portal and then run the demo in a browser hosted by a local server.
 
-## Demo App
+### Preparing an Optimizely Project
+This section provides the steps to prepare an Optimizely project in your dashboard.
 
-This example app illustrates how an online retailer could developer a new feature behind a toggle, rollout it out gradually to more users and run an experiment on the new vs old experience by tracking a business metric.
+1. Clone or download the **javascript-sdk-demo-app** package.
+2. Log in or create an [Optimizely Account](https://app.optimizely.com/signin).
+3. Create a project via the Optimizely dashboard.
+4. Add a Feature with the key `sorting_enabled`. This will act as a toggle for the sorting Feature.
+5. Add a Variable Key to the Feature called `welcome_message`, set a default value, and save the Feature.
+6. Add an Event Key called `item_purchase` and save the event. This event will be triggered when one of the **Buy** buttons is clicked.
+7. Create a new Experiment using the Feature `sorting_enabled`. Create two variations with a 50/50 split where only one variation is enabled for the sorting Feature.
+8. Navigate to the directory where the package was downloaded to in Step 1 and open **./constants.js** in a text editor.
+9. Update the default `datafileURL` field in the file with the URL from your Optimizely dashboard, located under **Settings** > **Environments**. The URL points to the JSON data file stored on Optimizely that will be used by code within the demo.
+```javascript
+// constants.js
 
-Using the instructions below, you can run the app locally and mimic bucketing website visitors by entering unique user IDs into the input bar. For example, the user ID “Matt” would simulate a unique visitor and the SDK would determine whether the feature shold be shown. The bucket that is given to a specific unique visitor, such as Matt, will be deterministic. This means as long as the Optimizely conditions remain the same, Matt will always get the same experience.
- 
-<img src="https://github.com/optimizely/javascript-sdk-demo-app/blob/master/src/images/screenshot.png" width="450">
+// Default datafile provided to get up and running quickly. Replace with your own!
+//const datafileURL = 'https://cdn.optimizely.com/datafiles/CpqC7ch493FEqa3HzY3963.json';
+const datafileURL = 'https://cdn.optimizely.com/datafiles/AbCdE12345.json'; <- replace this with your URL
 
-### Deploying the App
-1. Login or create an [Optimizely Account](https://app.optimizely.com/signin).
-2. Create a project via the Optimizely dashboard. [Instructions](http://developers.optimizely.com/server/getting-started/index.html?language=javascript)
-3. Add a Feature with the key `sorting_enabled`. This will act as a toggle for our new feature. 
-4. Add the Event Key `item_purchase`.
-5. In `constants.js`, update the `datafileURL` field. This is found in the dashboard, under Settings -> Environments.
-6. Install dependencies & run the application
-```
-$ npm install
-$ npm start
-```
-6. You’re all set. View at: `http://localhost:8080`!
-
-### Frontend Bundle
-
-Instead of including the SDK on the page as a standalone JavaScript asset, we use webpack to bundle all of our source code and dependencies into a single bundle. This includes all of our application logic as well as experimentation logic, including the Optimizely SDK. See `webpack.config.js`, the webpack configuration file, for an example of how this can work.
-
-Alternatively, you could use webpack to build two bundles: a standalone Optimizely SDK bundle that assigns a property to `window`, and your application bundle which would make references to the global Optimizely SDK client variable.
-
-### Building the App
-
-In this app, we are adding the ability to sort items by price or category. We are improving the user experience by adding the ability to sort items rather than displaying randomly on the page. To do so safely, we are building this new feature behind an Optimizely powered Feature Flag. This gives us the ability to gate access without code deployments.
-
-First, we must initialize the Optimizely JavaScript SDK. `optimizely_manager.js` handles initializing the Optimizely client. To instantiate an Optimizely client you must pass in a [datafile](https://developers.optimizely.com/x/solutions/sdks/reference/?language=javascript#datafile). The datafile acts as a config file and represents the state of your Optimizely project. It contains information like the status of your features, experiments, configuration parameters and traffic allocation.
-
-```
-var datafile = await _getDatafile();
-  return optimizely.createInstance({
-    datafile: datafile
-  });
-```
-
-The main component of this app is implementing a Feature Flag to gate the code for our new sorting feature. We will use the `isFeaturedEnabled` API, which given a userID determines if the feature should be shown. It will return a Boolean `true` or `false`.
-
-```
-const isSortingEnabled = optimizelyClientInstance.isFeatureEnabled(
-      'sorting_enabled',
-       userID);
-
-if (isSortingEnabled) {
-    // Display Feature
-      _renderSortingDropdown();
-    }
-```
-
-This same function, `isFeatureEnabled` also controls Rollouts and Feature Tests through the SDK's bucketing logic. This is helpful when rolling out the feature to larger audiences or running experiments. Read more about [SDK bucketing](https://help.optimizely.com/Build_Campaigns_and_Experiments/How_bucketing_works_in_Optimizely's_Full_Stack_SDKs) on the Optiverse.
-
-At this point, you can toggle the Feature Flag on and off by flipping the switch in the Feature Flag settings, under Rollouts. 
-
-Next, let's run a Feature Test on this feature to ensure it doesn't negatively affect business metrics, like online sales. In this experiment, half the users will be exposed to the original experience and the other will see our new sorting feature. Ideally, this feature should increase checkout rate. 
-
-Additionally, through Feature Configuration, you can set and manage variables in the Optimizely dashboard that can be accessed in code through the Optimizely object. In our case, let's dynamically change the welcome message using `getFeatureVariableString`. This function will return the corresponding string based on the user's bucket. To add this, return to the sorting_enabled Feature in the Optimizely dashboard. Add a variable under Feature Configuration. Name the Variable Key `welcome_message` and use type String. The code looks like:
-
-```
-const welcomeMessage = optimizelyClientInstance.getFeatureVariableString(
-      'sorting_enabled',
-      'welcome_message',
-      userID,
-    );
-
-if (welcomeMessage) {
-    $('#welcome').html(welcomeMessage);
+module.exports = {
+  datafileURL
 }
+```
+8. Save the file. 
+
+### Running the Server and Demo
+
+1. Open a terminal window and navigate to the root of the **javascript-sdk-demo-app** package.
+2. Install the dependencies:
+```shell
+npm install
+```
+3. Run the server:
+```shell
+npm start
+```
+Once the server is executing, the output should indicate that it's running on Port 8080.
+4. Open a browser and enter `http://localhost:8080` as the URL. The demo webpage should display.
+
+## How the Test App was Created
+The following subsections provide information about key aspects of the demo and how it was put together:
+* [Project Structure](#project-structure)
+* [SDK Packaging](#sdk-packaging)
+* [User Interface](#user-interface)
+* [Visual Assets](#user-interface-and-visual-assets)
+* [Styling](#styling)
+
+### Package Structure
+The following are the main components of interest in the package:
+
+1. **constants.js**: contains the URL of the datafile to use for the experiment. The datafile acts as a config file and represents the state of your Optimizely project. It contains information like the status of your features, experiments, configuration parameters, and traffic allocation.
+2. **webpack.config.js**: contains configuration information describing how the SDK is [bundled](#sdk-packacking) with the demo. 
+3. **server.js**: contains the node.js server to run the demo locally on Port 8080.
+4. **./node_modules**: contains the node.js dependencies.
+5. **./src**: contains the HTML, JavaScript, and resources for the (client-side) demo webpage. **index.html** contains the base web page UI that is displayed. **purchase.html** contains a message indicating that an event is being tracked by Optimizely.
+
+### SDK Packaging
+Instead of including the [Optimizely JavaScript SDK](https://github.com/optimizely/javascript-sdk) on the page as a standalone JavaScript asset, the SDK was bundled with the web site's resources using [webpack](https://webpack.js.org). webpack bundles the source code, dependencies, application and experimentation logic, and the Optimizely SDK into a single bundle and is configured using the webpack configuration file: **./webpack.config.js**:
+```javascript
+const path = require('path');
+
+const DIST_DIR = path.join(__dirname, '/dist');
+const CLIENT_DIR = path.join(__dirname, '/src');
+
+module.exports = {
+  context: CLIENT_DIR,
+
+  entry: './js/index',
+
+  output: {
+    path: DIST_DIR,
+    filename: 'bundle.js',
+  },
+  resolve: {
+    extensions: ['.js'],
+  },
+  target: 'web',
+};
 
 ```
 
-To complete this Feature Test, we must track a metric. Let's track button clicks to "Buy Now", as we want to ensure this feature encourages users to buy items. We've added an onClick handler to the HTML button that triggers a call to Optimizely's `.track()` function. 
+The bundled SDK is located in **./dist/bundle.js** and the demo source code is located in **./src**.
 
-`optimizelyClientInstance.track('item_purchase', userID);`
+**Note:** alternatively you could use webpack to build two bundles: a standalone Optimizely SDK bundle that assigns a property to `window`, and your application bundle, which would make references to the global Optimizely SDK client variable.
 
-Before we can test it locally, we need to create the experiment in the Optimizely dashboard. Create a new Feature Test using the Feature `sorting_enabled`. Let's create two variations with a 50/50 split. Only one variation should enabled our sorting feature. Next, we should see the previously added Feature Config variable `welcome_message`. Now we can add text for each experience ON/OFF. Lastly, add a new event with the Event Key `item_purchase`. The datafile will now update and upload these new configurations to the CDN. After a few minutues, try simulating visitors in the experiment using the input bar. Also, try clicking the Buy Now button to simulate a coversion event. Within a few seconds, you should see the results populate on the Optimizely results page.
+### Visual Assets
+**./src/items.csv** contains the list of products to sell on the demo website. For each product the file provides the description, color, name, price, and the name of a .png image file to display. The image files are located in **./src/images**:
+|Asset                   |Description                                                                                        |
+|------------------------|---------------------------------------------------------------------------------------------------|
+|`item_1.png`            |Contains an image of a hat.|
+|`item_2.png`            |Contains an image of a pair of shorts.|
+|`item_3.png`            |Contains an image of a bag.|
+|`item_4.png`            |Contains an image of a dress.|
+|`item_5.png`            |Contains an image of a dress .|
+|`item_6.png`            |Contains an image of a shirt.|
+|`item_7.png`            |Contains an image of a shirt.|
+|`item_8.png`            |Contains an image of a shirt.|
+|`item_9.png`            |Contains an image of a sweater.|
 
+### Styling
+The web page (**index.html**) references a basic CSS located in **./src/css**.
 
-## Getting Help! 
+### User Interface
 
+**Main Page**
+The base web page is defined in **./src/index.html** and the JavaScript used by that page is defined in **./src/js/index.js**. When the web page starts, the `main` function in **index.js** is invoked and starts by creating an instance of Optimizely Client that will be used throughout the scripts:
+```javascript
+
+import OptimizelyManager from './optimizely_manager';
+
+...
+
+async function main() {
+  const optimizelyClientInstance = await OptimizelyManager.createInstance();
+  ...
+}
+```
+
+**Note**: `OptimizelyManager` is a helper class and more information about it is provided below in [Create the Manager Instance](#create-the-manager-instance).
+
+The function then sets up the `ready` handler:
+```javascript
+async function main() {
+  const optimizelyClientInstance = await OptimizelyManager.createInstance();
+
+  $(document).ready(function () {
+    _buildItems()
+      .then(_renderItemsTable)
+      .then(function (tableHTML) {
+        $('#items-table').html(tableHTML);
+      });
+
+    $('#input-name-button').on('click', function () {
+      const userID = $('#input-name').val();
+      if (!userID) {
+        return;
+      }
+      shop(userID);
+    });
+  });
+
+  ...
+}
+```
+
+The `ready` handler starts by invoking a helper function called `_builditems` that reads the products from **./src/items.csv** and stores them in a collection. It then invokes a helper function called `_renderItemsTable` passing in the collection of products that that helper function uses to render into an HTML table. `_renderItemsTable` also sets up an onclick event handler for each **Buy** button. The `ready` handler finishes by adding an onclick event handler for the **Shop** button (the Shop button is described in more detail below).
+
+**Note:** the helper functions are also located in **index.js**.
+
+The `main` function also defines event handlers for the **Shop** and **Buy** buttons as described in the next section: [Functionality](#functionality).
+
+**Tracking Page**
+When the user clicks one of the **buy** buttons, the demo redirects the browser to **./src/purchase.html** to inform the user that the purchase event is being tracked by Optimizely. The purchase page includes a link called **Back to Catalog** that redirects the browser back to **index.html** when clicked:
+
+![Purchase Page](./purchasepage.png)
+
+## Configure Resources
+To prepare for API usage:
+* [Create the Manager Instance](#create-the-manager-instance)
+
+### Create the Manager Instance
+**./src/js/optimizely_manager.js** is a helper class that contains a method to create an instance of the Optimizely client:
+```javascript
+...
+import {datafileURL} from '../../constants';
+
+class OptimizelyManager {
+
+  // instantiate the Optimizely client
+  static async createInstance() {
+    var datafile = await _getDatafile();
+    return optimizely.createInstance({
+      datafile: datafile,
+      logger: logger.createLogger({
+        logLevel: enums.LOG_LEVEL.DEBUG,
+      }),
+    });
+  }
+}
+```
+
+The function starts by invoking an asynchronous helper function called `_getDatafile()` (also defined in **optimizely_manager.js**) that gets the data from the file specified by the `datafileURL` const in **./constants.js**. This URL was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project).
+
+## Functionality
+The demo illustrates how to:
+* [Check if a Feature is Enabled](#check-if-a-feature-is-enabled)
+* [Track the Experiment](#track-the-experiment)
+
+### Check if a Feature is Enabled
+When the user clicks the **Shop** button beside the input field, the `shop` event handler set up by `main` is invoked:
+```javascript
+
+function shop(userID) {
+  // retrieve Feature Flag
+  const isSortingEnabled = optimizelyClientInstance.isFeatureEnabled(
+    'sorting_enabled',
+    userID,
+  );
+  
+  // display feature if enabled
+  if (isSortingEnabled) {
+    _renderSortingDropdown();
+  } else {
+  // ensure feature is disabled
+    $('#sorting').remove();
+  }
+
+  // update UI to display if Feature Flag is enabled
+  const indicatorBool = (isSortingEnabled) ? 'ON' : 'OFF';
+  const indicatorMessage = `[Feature ${indicatorBool}] The feature "sorting_enabled" is ${indicatorBool} for user ${userID}`;
+  $('#feature-indicator').html(indicatorMessage);
+
+  // retrieve welcome message stored as a feature variable
+  const welcomeMessage = optimizelyClientInstance.getFeatureVariableString(
+    'sorting_enabled',
+    'welcome_message',
+    userID,
+  );
+  if (welcomeMessage) {
+    $('#welcome').html(welcomeMessage);
+  } else {
+   // Set a default message
+    $('#welcome').html('Welcome to Attic & Button');
+  }
+}
+```
+
+The handler takes in a user ID which is the name entered by the user in the edit field. The handler then invokes the `isFeatureEnabled` API passing the feature name `sorting_enabled` that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. If the feature has been enabled for that user ID then the sort dropdown is displayed allowing the user to sort the products, otherwise a message is displayed informing the user that the feature has not been enabled. You can toggle the Feature Flag in the **Feature Flag** settings under **Rollouts** in your Optimizely dashboard.
+
+**Note:** `isFeatureEnabled` also controls Rollouts and Feature Tests through the SDK's bucketing logic. This is helpful when rolling out the feature to larger audiences or running experiments. Read more about [SDK bucketing](https://help.optimizely.com/Build_Campaigns_and_Experiments/How_bucketing_works_in_Optimizely's_Full_Stack_SDKs) on the Optiverse.
+
+The bottom of the event handler demonstrates the `getFeatureVariableString` API which is used to determine if a custom welcome message has been configured for the feature, and if it has, replaces the default message.
+
+### Track the Experiment
+When the user clicks one of the **Buy** buttons located below a product image, the `buy` event handler set up by `main` is invoked: 
+```javascript
+function buy() {
+  const userID = $('#input-name').val();
+  optimizelyClientInstance.track('item_purchase', userID);
+  window.location.href = '/purchase.html';
+}
+```
+
+The handler obtains the user ID entered by the user in the input field. The handler then invokes the `track` API passing in the `item_purchase` event that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. Finally, the handler redirects the user to **.\src\purchase.html** to inform them about the experiment tracking.
+
+## Additional Resources
 * Developer Docs: https://developers.optimizely.com/x/solutions/sdks/
 * Questions? Shoot us an email at developers@optimizely.com
