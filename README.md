@@ -1,21 +1,21 @@
-# Optimizely Javascript SDK Tutorial
+# Optimizely JavaScript SDK Tutorial
 
-This tutorial enables you to quickly get started in your development efforts to create a Javascript-based webpage with the Optimizely X Javascript SDK Demo. This demo package includes an interactive project that illustrates how an online retailer could develop a new feature behind a toggle, roll it out gradually to more users, and run an experiment that tracks a business metric for the new and the old experiences.
+This tutorial enables you to quickly get started in your development efforts to create a JavaScript-based webpage with the Optimizely X JavaScript SDK Demo. This demo package includes an interactive project that illustrates how an online retailer could develop a new feature behind a toggle, roll it out gradually to more users, and run an experiment that tracks a business metric for the new and the old experiences.
 
-The feature is a dropdown allowing the user to sort items by price or category, giving the user more control over just viewing products randomly on the page. To roll this feature out, it has been built behind an Optimizely-powered Feature Flag that provides the ability to gate access without the need to deployment different versions of code.
+The feature is a dropdown allowing the user to sort items by price or category, giving the user more control over just viewing products randomly on the page. To roll this feature out, it has been built behind an Optimizely-powered Feature that provides the ability to gate access without the need to deploy different versions of code.
 
 ![test-app screens](./screenshot.png)
 
-You can run the app locally and mimic the bucketing of website visitors by entering unique user IDs into the edit field. For example, entering the user ID **Matt** simulates a unique visitor, and the app uses the SDK to determine whether the sorting dropdown feature is displayed. The bucket assigned to a specific unique visitor, such as Matt, is deterministic. This means that so long as the Optimizely conditions remain the same, Matt will always have the same experience.
+You can run the app locally and mimic the bucketing of website visitors by entering unique user IDs into the edit field. For example, entering the user ID “Matt” simulates a unique visitor and the app uses the SDK to determine whether the sorting dropdown feature should be shown. The bucket that is given to a specific unique visitor, such as Matt, is deterministic. This means that as long as the Optimizely conditions remain the same, Matt will always get the same experience.
 
 The demo works as follows:
-* Configuration includes setting up a project, feature, and event in the Optimizely dashboard, which is accessed by the demo web page using the Optimizely Javascript API.
-* The demo app consists of a single web page stored in **./src/index.html** and a local server listening on Port 8080. The SDK is included in the web page via a [webpack](https://webpack.js.org) bundle.
+* Configuration starts by setting up a project, feature, and event in the Optimizely dashboard which will be queried by the demo web page using the Optimizely JavaScript API.
+* The demo consists of a single web page defined in **./src/index.html** and a local server listening on Port 8080 that runs the server. The SDK is included in the web page via a [webpack](https://webpack.js.org) bundle.
 * The main function and UI event handlers for the web page are defined in **./src/js/index.js**.
 * The code to create an Optimizely Client instance is defined in **/src/js/optimizely_manager.js**.
-* As the web page is rendered, the list of products and the names of their associated images are read from **./src/items.csv**.
-* When the user clicks **Shop**, the demo invokes `isFeatureEnabled`, passing the user ID (specified in the edit field) and the feature name (`sorting_enabled`), to determine if the sorting dropdown should be shown for the user.
-* When the user clicks one of the **Buy Now** buttons, the demo invokes `track`, passing in the event key `item_purchase` and the user ID to track the event.
+* As the web page is rendered, the list of products and the names of their associated images to render, are read from **./src/items.csv**.
+* When the user clicks **Shop**, the demo invokes `isFeatureEnabled`, passing the user ID entered in the edit field and the feature name (`sorting_enabled`), to determine if the sorting dropdown should be shown for the user.
+* When the user clicks one of the **Buy Now** buttons, the demo invokes `track`, passing in the event key `item_purchase` and the user ID entered in the edit field, to track the event.
 
 ## Prerequisites
 * [Optimizely account](https://app.optimizely.com/signin)
@@ -41,7 +41,7 @@ This section provides the steps to prepare an Optimizely project in your dashboa
 
 // Default datafile provided to get up and running quickly. Replace with your own!
 //const datafileURL = 'https://cdn.optimizely.com/datafiles/CpqC7ch493FEqa3HzY3963.json';
-const datafileURL = 'https://cdn.optimizely.com/datafiles/626QeFJNZRdW8SkvGSFEuq.json'; <- replace this with your URL
+const datafileURL = 'https://cdn.optimizely.com/datafiles/AbCdE12345.json'; <- replace this with your URL
 
 module.exports = {
   datafileURL
@@ -78,10 +78,10 @@ The following are the main components of interest in the package:
 2. **webpack.config.js**: contains configuration information describing how the SDK is [bundled](#sdk-packacking) with the demo. 
 3. **server.js**: contains the node.js server to run the demo locally on Port 8080.
 4. **./node_modules**: contains the node.js dependencies.
-5. **./src**: contains the HTML, Javascript, and resources for the (client-side) demo webpage. **index.html** contains the base web page UI that is displayed. **purchase.html** contains a message indicating that an event is being tracked by Optimizely.
+5. **./src**: contains the HTML, JavaScript, and resources for the (client-side) demo webpage. **index.html** contains the base web page UI that is displayed. **purchase.html** contains a message indicating that an event is being tracked by Optimizely.
 
 ### SDK Packaging
-Instead of including the [Optimizely Javascript SDK](https://github.com/optimizely/javascript-sdk) on the page as a standalone JavaScript asset, the SDK was bundled with the web site's resources using [webpack](https://webpack.js.org). webpack bundles the source code, dependencies, application and experimentation logic, and the Optimizely SDK into a single bundle and is configured using the webpack configuration file: **./webpack.config.js**:
+Instead of including the [Optimizely JavaScript SDK](https://github.com/optimizely/javascript-sdk) on the page as a standalone JavaScript asset, the SDK was bundled with the web site's resources using [webpack](https://webpack.js.org). webpack bundles the source code, dependencies, application and experimentation logic, and the Optimizely SDK into a single bundle and is configured using the webpack configuration file: **./webpack.config.js**:
 ```javascript
 const path = require('path');
 
@@ -111,18 +111,17 @@ The bundled SDK is located in **./dist/bundle.js** and the demo source code is l
 
 ### Visual Assets
 **./src/items.csv** contains the list of products to sell on the demo website. For each product the file provides the description, color, name, price, and the name of a .png image file to display. The image files are located in **./src/images**:
-
 |Asset                   |Description                                                                                        |
 |------------------------|---------------------------------------------------------------------------------------------------|
-|`item_1.png`|Contains an image of a hat.|
-|`item_2.png`|Contains an image of a pair of shorts.|
-|`item_3.png`|Contains an image of a bag.|
-|`item_4.png`|Contains an image of a dress.|
-|`item_5.png`|Contains an image of a dress .|
-|`item_6.png`|Contains an image of a shirt.|
-|`item_7.png`|Contains an image of a shirt.|
-|`item_8.png`|Contains an image of a shirt.|
-|`item_9.png`|Contains an image of a sweater.|
+|`item_1.png`            |Contains an image of a hat.|
+|`item_2.png`            |Contains an image of a pair of shorts.|
+|`item_3.png`            |Contains an image of a bag.|
+|`item_4.png`            |Contains an image of a dress.|
+|`item_5.png`            |Contains an image of a dress .|
+|`item_6.png`            |Contains an image of a shirt.|
+|`item_7.png`            |Contains an image of a shirt.|
+|`item_8.png`            |Contains an image of a shirt.|
+|`item_9.png`            |Contains an image of a sweater.|
 
 ### Styling
 The web page (**index.html**) references a basic CSS located in **./src/css**.
@@ -130,7 +129,7 @@ The web page (**index.html**) references a basic CSS located in **./src/css**.
 ### User Interface
 
 **Main Page**
-The base web page is defined in **./src/index.html** and the Javascript used by that page is defined in **./src/js/index.js**. When the web page starts, the `main` function in **index.js** is invoked and starts by creating an instance of Optimizely Client that will be used throughout the scripts:
+The base web page is defined in **./src/index.html** and the JavaScript used by that page is defined in **./src/js/index.js**. When the web page starts, the `main` function in **index.js** is invoked and starts by creating an instance of Optimizely Client that will be used throughout the scripts:
 ```javascript
 
 import OptimizelyManager from './optimizely_manager';
@@ -143,7 +142,7 @@ async function main() {
 }
 ```
 
-**Note**: `OptimizelyManager` is a helper class. For more information, see [Create the Manager Instance](#create-the-manager-instance).
+**Note**: `OptimizelyManager` is a helper class and more information about it is provided below in [Create the Manager Instance](#create-the-manager-instance).
 
 The function then sets up the `ready` handler:
 ```javascript
@@ -170,9 +169,9 @@ async function main() {
 }
 ```
 
-The `ready` handler starts by invoking a helper function called `_builditems` that reads the products from **./src/items.csv** and stores them in a collection. It then invokes a helper function called `_renderItemsTable`, passing in the collection of products that the helper function uses to render into an HTML table. `_renderItemsTable` also sets up an `onclick` event handler for each **Buy** button. The `ready` handler finishes by adding an `onclick` event handler for the **Shop** button (the Shop button is described in more detail below).
+The `ready` handler starts by invoking a helper function called `_builditems` that reads the products from **./src/items.csv** and stores them in a collection. It then invokes a helper function called `_renderItemsTable` passing in the collection of products that that helper function uses to render into an HTML table. `_renderItemsTable` also sets up an onclick event handler for each **Buy** button. The `ready` handler finishes by adding an onclick event handler for the **Shop** button (the Shop button is described in more detail below).
 
-**Note:** The helper functions are also located in **index.js**.
+**Note:** the helper functions are also located in **index.js**.
 
 The `main` function also defines event handlers for the **Shop** and **Buy** buttons as described in the next section: [Functionality](#functionality).
 
@@ -206,7 +205,7 @@ class OptimizelyManager {
 }
 ```
 
-The function starts by invoking an asyncronous helper function called `_getDatafile()` (also defined in **optimizely_manager.js**) that retrieves the data from the file specified by the `datafileURL` const in **./constants.js**. This URL was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project).
+The function starts by invoking an asynchronous helper function called `_getDatafile()` (also defined in **optimizely_manager.js**) that gets the data from the file specified by the `datafileURL` const in **./constants.js**. This URL was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project).
 
 ## Functionality
 The demo illustrates how to:
@@ -252,11 +251,11 @@ function shop(userID) {
 }
 ```
 
-The handler takes in a user ID which is the name entered by the user in the edit field. The handler then invokes the `isFeatureEnabled` API passing the feature name `sorting_enabled` that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. If the feature has been enabled for that user ID, the dropdown is displayed, allowing the user to sort the products; otherwise a message is displayed informing the user that the feature has not been enabled. You can toggle the Feature Flag in the **Feature Flag** settings under **Rollouts** in your Optimizely dashboard.
+The handler takes in a user ID which is the name entered by the user in the edit field. The handler then invokes the `isFeatureEnabled` API passing the feature name `sorting_enabled` that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. If the feature has been enabled for that user ID then the sort dropdown is displayed allowing the user to sort the products, otherwise a message is displayed informing the user that the feature has not been enabled. You can toggle the Feature Flag in the **Feature Flag** settings under **Rollouts** in your Optimizely dashboard.
 
 **Note:** `isFeatureEnabled` also controls Rollouts and Feature Tests through the SDK's bucketing logic. This is helpful when rolling out the feature to larger audiences or running experiments. Read more about [SDK bucketing](https://help.optimizely.com/Build_Campaigns_and_Experiments/How_bucketing_works_in_Optimizely's_Full_Stack_SDKs) on the Optiverse.
 
-The last portion of the event handler demonstrates the `getFeatureVariableString` API, which is used to determine if a custom welcome message has been configured for the feature, and if it has, replaces the default message.
+The bottom of the event handler demonstrates the `getFeatureVariableString` API which is used to determine if a custom welcome message has been configured for the feature, and if it has, replaces the default message.
 
 ### Track the Experiment
 When the user clicks one of the **Buy** buttons located below a product image, the `buy` event handler set up by `main` is invoked: 
@@ -268,7 +267,7 @@ function buy() {
 }
 ```
 
-The handler obtains the user ID entered by the user. The handler then invokes the `track` API passing in the `item_purchase` event that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. Finally, the handler redirects the user to **.\src\purchase.html** to inform them about the experiment tracking.
+The handler obtains the user ID entered by the user in the input field. The handler then invokes the `track` API passing in the `item_purchase` event that was configured above in [Preparing an Optimizely Project](#preparing-an-optimizely-project) and the user ID. Finally, the handler redirects the user to **.\src\purchase.html** to inform them about the experiment tracking.
 
 ## Additional Resources
 * Developer Docs: https://developers.optimizely.com/x/solutions/sdks/
